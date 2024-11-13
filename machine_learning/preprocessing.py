@@ -1,5 +1,6 @@
 import cv2
 from mtcnn.mtcnn import MTCNN
+import numpy as np
 
 def crop_and_resize(image, target_w=224, target_h=224):
     '''this function crop & resize images to target size by keeping aspect ratio'''
@@ -85,4 +86,10 @@ def extract_face(img, target_size=(224,224)):
     sqr_img = cv2.resize(new_face, target_size)
     return sqr_img
 
+def preprocessing(gambar):
+    face = extract_face(gambar)
+    rgb_img = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
+    rgb_img = rgb_img / 255.0
+    rgb_img_batch = np.expand_dims(rgb_img, axis=0)
 
+    return rgb_img_batch
