@@ -1,0 +1,12 @@
+matplotlib
+numpy
+opencv-python
+scipy
+seaborn
+pandas
+mtcnn
+tensorflow
+Flask-JWT-Extended
+flask_sqlalchemy
+flask-migrate
+mysqlclient
