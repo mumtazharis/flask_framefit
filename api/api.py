@@ -4,7 +4,8 @@ from api.user import get_users, add_user, login_user
 from api.profile import get_profile
 from api.contact_us import contact_admin
 from api.kacamata import get_kacamata, add_kacamata
-from api.predict import get_prediction
+# from api.predict import get_prediction
+from api.predictpcvk import get_prediction
 from api.verify_token import verify_token
 
 # Membuat Blueprint
@@ -21,3 +22,4 @@ api_blueprint.route('/contact', methods=['POST'])(contact_admin)
 api_blueprint.route('/kacamata', methods=['GET'])(jwt_required()(get_kacamata))    
 api_blueprint.route('/kacamata', methods=['POST'])(jwt_required()(add_kacamata))   
 api_blueprint.route('/predict', methods=['POST'])(get_prediction)  
+ 

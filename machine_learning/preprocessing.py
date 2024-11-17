@@ -1,95 +1,87 @@
 import cv2
-from mtcnn.mtcnn import MTCNN
 import numpy as np
+import matplotlib.pyplot as plt
 
-def crop_and_resize(image, target_w=224, target_h=224):
-    '''this function crop & resize images to target size by keeping aspect ratio'''
-    if image.ndim == 2:
-        img_h, img_w = image.shape             # for Grayscale will be   img_h, img_w = img.shape
-    elif image.ndim == 3:
-        img_h, img_w, channels = image.shape   # for RGB will be   img_h, img_w, channels = img.shape
-    target_aspect_ratio = target_w/target_h
-    input_aspect_ratio = img_w/img_h
 
-    if input_aspect_ratio > target_aspect_ratio:
-        resize_w = int(input_aspect_ratio*target_h)
-        resize_h = target_h
-        img = cv2.resize(image, (resize_w , resize_h))
-        crop_left = int((resize_w - target_w)/2)  ## crop left/right equally
-        crop_right = crop_left + target_w
-        new_img = img[:, crop_left:crop_right]
-    if input_aspect_ratio < target_aspect_ratio:
-        resize_w = target_w
-        resize_h = int(target_w/input_aspect_ratio)
-        img = cv2.resize(image, (resize_w , resize_h))
-        crop_top = int((resize_h - target_h)/4)   ## crop the top by 1/4 and bottom by 3/4 -- can be changed
-        crop_bottom = crop_top + target_h
-        new_img = img[crop_top:crop_bottom, :]
-    if input_aspect_ratio == target_aspect_ratio:
-        new_img = cv2.resize(image, (target_w, target_h))
+def detectFace(image):
+    """Mendeteksi wajah menggunakan Haar Cascade dan mengembalikan bounding box wajah terbesar."""
+    # Muat Haar Cascade
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-    return new_img
+    # Konversi gambar ke skala abu-abu
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-detector = MTCNN()  # creates detector
+    # Deteksi wajah
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
 
-def extract_face(img, target_size=(224,224)):
-    '''this functions extract the face from different images by
-    1) finds the facial bounding box
-    2) slightly expands top & bottom boundaries to include the whole face
-    3) crop into a square shape
-    4) resize to target image size for modelling
-    5) if the facial bounding box in step 1 is not found, image will be cropped & resized to 224x224 square'''
-
-    # 1. detect faces in an image
-
-    results = detector.detect_faces(img)
-    if results == []:    # if face is not detected, call function to crop & resize by keeping aspect ratio
-        new_face = crop_and_resize(img, target_w=224, target_h=224)
+    if len(faces) > 0:
+        # Cari wajah dengan area terbesar
+        largest_face = max(faces, key=lambda face: face[2] * face[3])  # [x, y, w, h]
+        return largest_face
     else:
-        x1, y1, width, height = results[0]['box']
-        x2, y2 = x1+width, y1+height
-        face = img[y1:y2, x1:x2]  # this is the face image from the bounding box before expanding bbox
+        return None
 
-        # 2. expand the top & bottom of bounding box by 10 pixels to ensure it captures the whole face
-        adj_h = 10
+def cropFace(image, face, target_size=(224, 224)):
+    """Mencrop wajah dari gambar dengan menambahkan buffer dan resize dengan menjaga aspect ratio."""
+    if face is not None:
+        x, y, w, h = face
 
-        #assign value of new y1
-        if y1-adj_h <10:
-            new_y1=0
-        else:
-            new_y1 = y1-adj_h
+        # Menambahkan buffer ke atas dan bawah wajah untuk mencakup seluruh kepala
+        buffer_top = int(h * 0.2)  # Tambahkan 20% dari tinggi wajah ke atas
+        buffer_bottom = int(h * 0.2)  # Tambahkan 20% dari tinggi wajah ke bawah
+        buffer_left = int(w * 0.1)  # Tambahkan 10% dari lebar wajah ke kiri
+        buffer_right = int(w * 0.1)  # Tambahkan 10% dari lebar wajah ke kanan
 
-        #assign value of new y2
-        if y1+height+adj_h < img.shape[0]:
-            new_y2 = y1+height+adj_h
-        else:
-            new_y2 = img.shape[0]
-        new_height = new_y2 - new_y1
+        # Tentukan area crop baru dengan buffer
+        y_top = max(0, y - buffer_top)  # Pastikan tidak keluar dari batas gambar
+        y_bottom = min(image.shape[0], y + h + buffer_bottom)  # Pastikan tidak keluar dari batas gambar
+        x_left = max(0, x - buffer_left)  # Pastikan tidak keluar dari batas gambar
+        x_right = min(image.shape[1], x + w + buffer_right)  # Pastikan tidak keluar dari batas gambar
 
-        # 3. crop the image to a square image by setting the width = new_height and expand the box to new width
-        adj_w = int((new_height-width)/2)
+        # Crop gambar dengan area baru
+        cropped_face = image[y_top:y_bottom, x_left:x_right]
 
-        #assign value of new x1
-        if x1-adj_w < 0:
-            new_x1=0
-        else:
-            new_x1 = x1-adj_w
+        # Resize dengan menjaga aspect ratio
+        old_h, old_w = cropped_face.shape[:2]
+        target_w, target_h = target_size
 
-        #assign value of new x2
-        if x2+adj_w > img.shape[1]:
-            new_x2 = img.shape[1]
-        else:
-            new_x2 = x2+adj_w
-        new_face = img[new_y1:new_y2, new_x1:new_x2]  # face-cropped square image based on original resolution
+        # Hitung skala resize
+        scale = min(target_w / old_w, target_h / old_h)
+        new_w = int(old_w * scale)
+        new_h = int(old_h * scale)
 
-    # 4. resize image to the target pixel size
-    sqr_img = cv2.resize(new_face, target_size)
-    return sqr_img
+        # Resize gambar
+        resized_face = cv2.resize(cropped_face, (new_w, new_h), interpolation=cv2.INTER_AREA)
 
-def preprocessing(gambar):
-    face = extract_face(gambar)
-    rgb_img = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
-    rgb_img = rgb_img / 255.0
-    rgb_img_batch = np.expand_dims(rgb_img, axis=0)
+        # Buat canvas hitam untuk padding
+        canvas = np.zeros((target_h, target_w, 3), dtype=np.uint8)
 
-    return rgb_img_batch
+        # Hitung offset untuk center padding
+        x_offset = (target_w - new_w) // 2
+        y_offset = (target_h - new_h) // 2
+
+        # Tempelkan gambar yang di-resize ke canvas
+        canvas[y_offset:y_offset+new_h, x_offset:x_offset+new_w] = resized_face
+
+        return canvas
+    else:
+        return None
+
+def preprocessing(image):
+    # Deteksi wajah
+    face = detectFace(image)
+
+    # Jika wajah terdeteksi, lakukan crop
+    if face is not None:
+        cropped_face = cropFace(image, face)
+
+        # cropped_face = cv2.cvtColor(cropped_face, cv2.COLOR_BGR2RGB)
+ #       Tampilkan hasil crop
+        # Tampilkan gambar dengan OpenCV
+        cv2.imshow('Preproccess',cropped_face)
+        cv2.waitKey(0)  # Tunggu hingga tombol ditekan
+        cv2.destroyAllWindows()  # Tutup jendela
+        return cropped_face.astype(np.uint8)
+    else:
+        # Jika tidak ada wajah yang terdeteksi, kembalikan None
+        return None

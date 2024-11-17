@@ -1,3 +1,4 @@
 __pycache__
 myenv
-machine_learning/model_t1.keras
+deep_learning/model_t1.keras
+machine_learning/shape_predictor_81_face_landmarks.dat

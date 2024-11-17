@@ -1,9 +1,9 @@
 from tensorflow.keras.models import load_model
-from machine_learning.preprocessing import preprocessing
+from deep_learning.preprocessing import preprocessing
 import cv2
 import numpy as np
 
-model = load_model('machine_learning/model_t1.keras')
+model = load_model('deep_learning/model_t1.keras')
 
 label_map = {0: 'Heart', 1: 'Oblong', 2: 'Oval', 3: 'Round', 4: 'Square'}
 
