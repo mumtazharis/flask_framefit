@@ -2,3 +2,5 @@ __pycache__
 myenv
 deep_learning/model_t1.keras
 machine_learning/shape_predictor_81_face_landmarks.dat
+Frame
+migrations

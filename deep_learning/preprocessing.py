@@ -90,42 +90,6 @@ def extract_face(img, target_size=(224,224)):
 def preprocessing(gambar):
     face = extract_face(gambar)
     rgb_img = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
-   
-
-    # frame = rgb_img
-
-    # # Path ke predictor
-    # predictor_path = 'machine_learning/shape_predictor_81_face_landmarks.dat'
-
-    # # Inisialisasi detektor dan predictor
-    # detector = dlib.get_frontal_face_detector()
-    # predictor = dlib.shape_predictor(predictor_path)
-
-    # # Deteksi wajah pada gambar
-    # dets = detector(frame, 0)
-    # for k, d in enumerate(dets):
-    #     # Dapatkan landmark wajah
-    #     shape = predictor(frame, d)
-    #     landmarks = np.matrix([[p.x, p.y] for p in shape.parts()])
-        
-    #     # Tampilkan titik landmark di wajah dan tambahkan angka
-    #     for num in range(shape.num_parts):
-    #         x = shape.parts()[num].x
-    #         y = shape.parts()[num].y
-    #         # Gambar titik
-    #         cv2.circle(frame, (x, y), 3, (0, 255, 0), -1)
-    #         # Tampilkan angka di atas titik
-    #         cv2.putText(frame, str(num), (x, y-5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1, cv2.LINE_AA)
-
-    # # Konversi gambar dari BGR ke RGB
-    # frame_rgb = frame
-
-    # # Tampilkan gambar hasil deteksi dengan landmark menggunakan Matplotlib
-    # plt.figure(figsize=(10,10))
-    # plt.imshow(frame_rgb)
-    # plt.axis('off')  # Menghilangkan axis
-    # plt.show()
-
     rgb_img = rgb_img / 255.0
     rgb_img_batch = np.expand_dims(rgb_img, axis=0)
     return rgb_img_batch

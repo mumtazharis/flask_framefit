@@ -1,6 +1,9 @@
 # Backed Framefit
 
-1. Clone
-2. virtualenv myenv
-3. myenv\Scripts\activate
-4. pip install -r requirement.txt
+Setelah melakukan clode, ketik tiap langkah ini pada terminal:
+1. virtualenv myenv
+2. myenv\Scripts\activate
+3. pip install -r requirement.txt
+4. flask db migrate
+5. flask db upgrade
+6. flask app.py
