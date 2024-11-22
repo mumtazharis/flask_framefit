@@ -4,7 +4,7 @@ from config import db
 from app import app
 
 # Path folder frames
-FRAME_FOLDER = "static/frames"
+FRAME_FOLDER = "static/Frames"
 
 # Tambahkan data ke tabel kacamata
 with app.app_context():
