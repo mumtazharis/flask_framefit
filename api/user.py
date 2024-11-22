@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import SQLAlchemyError
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required
+from flask_jwt_extended import JWTManager, create_access_token, create_refresh_token, get_jwt_identity
 from config import db
 from models import User, TemporaryUser, Profile
 # from utils import send_email
@@ -25,11 +25,15 @@ def login_user():
     user = User.query.filter_by(username=data['username']).first()
 
     if user and check_password_hash(user.password, data['password']):
-        # Membuat token JWT jika login berhasil
+        # Membuat access dan refresh token
         access_token = create_access_token(identity=user.user_id)
-        return jsonify(access_token=access_token), 200
+        refresh_token = create_refresh_token(identity=user.user_id)
+
+        return jsonify(access_token=access_token, refresh_token=refresh_token), 200
     else:
         return jsonify({"message": "Username atau password salah"}), 401
+    
+
 
 def register():
     data = request.get_json()

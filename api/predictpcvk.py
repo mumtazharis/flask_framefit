@@ -4,6 +4,7 @@ import numpy as np
 import cv2
 from machine_learning.preprocessing import preprocessing
 from machine_learning.feature_extraction import feature_extraction
+from machine_learning.predict import predict
 
 def get_prediction():
     # Memeriksa apakah ada file gambar yang diunggah
@@ -21,11 +22,13 @@ def get_prediction():
 
     preprocessed_img = preprocessing(img)
     if preprocessed_img is not None:
-        feature_extraction(preprocessed_img)
+        fitur = feature_extraction(preprocessed_img)
+        label, confidence = predict(fitur)
     if preprocessed_img is None:
         return jsonify({'error': 'Wajah tidak terdeteksi'}), 400
 
+
     return jsonify({
-        'predicted_label': 'Wajah berhasil terdeteksi',
-        # 'confidence': 'Akurasi ditampilkan disini'  # Membulatkan confidence ke 2 desimal
+        'predicted_label': label,
+        'confidence':  confidence # Membulatkan confidence ke 2 desimal
     })

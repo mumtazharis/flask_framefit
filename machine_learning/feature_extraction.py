@@ -112,3 +112,5 @@ def feature_extraction(image):
 
     for i, feature in enumerate(landmark_features, 1):
         print(f"Feature {i}: {feature:.2f}")
+
+    return landmark_features
