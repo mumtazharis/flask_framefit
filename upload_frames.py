@@ -18,14 +18,16 @@ with app.app_context():
                 folder_name = os.path.basename(root)  # Nama sub-folder
                 file_path = os.path.join(root, filename).replace("\\", "/")  # Handle Windows path
 
-                # Tentukan gender berdasarkan nama folder
+                 # Tentukan gender berdasarkan nama folder
                 if 'Man' in folder_name.lower():
                     gender = 'man'
                 elif 'Woman' in folder_name.lower():
                     gender = 'woman'
+                elif 'Unisex' in folder_name.lower():
+                    gender = 'unisex'
                 else:
                     logging.debug(f"Skipping file {filename} in folder {folder_name}")
-                    continue  # Skip files not in 'man' or 'woman' folders
+                    continue  # Skip files not in 'man', 'woman', or 'unisex' folders
 
                 # Tambahkan ke tabel kacamata
                 new_kacamata = Kacamata(
