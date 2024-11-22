@@ -15,9 +15,9 @@ with app.app_context():
                 file_path = os.path.join(root, filename).replace("\\", "/")  # Handle Windows path
 
                 # Tentukan gender berdasarkan nama folder
-                if 'man' in folder_name.lower():
+                if 'Man' in folder_name.lower():
                     gender = 'man'
-                elif 'woman' in folder_name.lower():
+                elif 'Woman' in folder_name.lower():
                     gender = 'woman'
                 else:
                     continue  # Skip files not in 'man' or 'woman' folders
