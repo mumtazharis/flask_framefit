@@ -12,7 +12,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = secrets.token_hex()
 
 
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)  # Masa berlaku access token
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=1)  # Masa berlaku access token
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=7)  # Masa berlaku refresh token
 
 db = SQLAlchemy(app)
