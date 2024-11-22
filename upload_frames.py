@@ -19,11 +19,11 @@ with app.app_context():
                 file_path = os.path.join(root, filename).replace("\\", "/")  # Handle Windows path
 
                  # Tentukan gender berdasarkan nama folder
-                if 'Man' in folder_name.lower():
-                    gender = 'man'
-                elif 'Woman' in folder_name.lower():
-                    gender = 'woman'
-                elif 'Unisex' in folder_name.lower():
+                if 'male' in folder_name.lower():
+                    gender = 'male'
+                elif 'female' in folder_name.lower():
+                    gender = 'female'
+                elif 'unisex' in folder_name.lower():
                     gender = 'unisex'
                 else:
                     logging.debug(f"Skipping file {filename} in folder {folder_name}")
