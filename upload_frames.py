@@ -28,9 +28,9 @@ with app.app_context():
                 # Tentukan gender dari folder `man` atau `woman`
                 gender = "unisex"
                 if len(folder_parts) >= 3:  # Pastikan struktur folder cukup panjang
-                    if "man" in folder_parts:
+                    if "male" in folder_parts:
                         gender = "male"
-                    elif "woman" in folder_parts:
+                    elif "female" in folder_parts:
                         gender = "female"
 
                 # Tentukan jenis dari folder terakhir
