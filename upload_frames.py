@@ -14,11 +14,19 @@ with app.app_context():
                 folder_name = os.path.basename(root)  # Nama sub-folder
                 file_path = os.path.join(root, filename).replace("\\", "/")  # Handle Windows path
 
+                # Tentukan gender berdasarkan nama folder
+                if 'man' in folder_name.lower():
+                    gender = 'man'
+                elif 'woman' in folder_name.lower():
+                    gender = 'woman'
+                else:
+                    continue  # Skip files not in 'man' or 'woman' folders
+
                 # Tambahkan ke tabel kacamata
                 new_kacamata = Kacamata(
                     model=filename.split('.')[0],  # Nama model dari file
                     jenis=folder_name,             # Nama folder sebagai jenis
-                    gender="unisex",
+                    gender=gender,
                     bentuk=folder_name,            # Asumsikan bentuk sama dengan jenis
                     deskripsi=f"Bingkai tipe {folder_name}",
                     foto=file_path                 # Path relatif gambar
