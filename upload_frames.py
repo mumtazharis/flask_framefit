@@ -4,33 +4,52 @@ from config import db
 from app import app
 
 # Path folder frames
-FRAME_FOLDER = "static/Frames"
+FRAME_FOLDER = "static/Frame"
+
+# Fungsi untuk mendeteksi gender berdasarkan path
+def detect_gender_from_path(path):
+    if "man" in path.lower():
+        return "male"
+    elif "woman" in path.lower():
+        return "female"
+    return "unisex"
 
 # Tambahkan data ke tabel kacamata
 with app.app_context():
+    # Iterasi folder utama
     for root, dirs, files in os.walk(FRAME_FOLDER):
         for filename in files:
-            if filename.endswith(('.png', '.jpg', '.jpeg')):  # Filter file gambar
-                folder_name = os.path.basename(root)  # Nama sub-folder
-                file_path = os.path.join(root, filename).replace("\\", "/")  # Handle Windows path
+            if filename.lower().endswith(('.png', '.jpg', '.jpeg')):  # Filter file gambar
+                # Dapatkan path file
+                file_path = os.path.join(root, filename).replace("\\", "/")
+                folder_path = os.path.normpath(root)  # Path folder saat ini
+                folder_parts = folder_path.split(os.sep)  # Pisahkan path menjadi bagian-bagian
 
-                # Tentukan gender berdasarkan nama folder
-                if 'Man' in folder_name.lower():
-                    gender = 'man'
-                elif 'Woman' in folder_name.lower():
-                    gender = 'woman'
-                else:
-                    continue  # Skip files not in 'man' or 'woman' folders
+                # Tentukan gender dari folder `man` atau `woman`
+                gender = "unisex"
+                if len(folder_parts) >= 3:  # Pastikan struktur folder cukup panjang
+                    if "man" in folder_parts:
+                        gender = "male"
+                    elif "woman" in folder_parts:
+                        gender = "female"
 
-                # Tambahkan ke tabel kacamata
+                # Tentukan jenis dari folder terakhir
+                jenis = folder_parts[-1]
+
+                # Debugging tambahan
+                print(f"Processing file: {file_path}")
+                print(f"Detected gender: {gender}, Jenis: {jenis}")
+
+                # Tambahkan data ke tabel kacamata
                 new_kacamata = Kacamata(
                     model=filename.split('.')[0],  # Nama model dari file
-                    jenis=folder_name,             # Nama folder sebagai jenis
+                    jenis=jenis,                   # Nama folder terakhir sebagai jenis
                     gender=gender,
-                    bentuk=folder_name,            # Asumsikan bentuk sama dengan jenis
-                    deskripsi=f"Bingkai tipe {folder_name}",
+                    bentuk=jenis,                  # Asumsikan bentuk sama dengan jenis
+                    deskripsi=f"Bingkai tipe {jenis}",
                     foto=file_path                 # Path relatif gambar
                 )
                 db.session.add(new_kacamata)
 
+    # Simpan semua perubahan ke database
     db.session.commit()
