@@ -8,7 +8,7 @@ from api.token import verify_token, refresh_token
 from api.profile import get_profile
 
 
-from api.predict import get_prediction
+from api.predictpcvk import get_prediction
 
 # Membuat Blueprint
 api_blueprint = Blueprint('api', __name__)

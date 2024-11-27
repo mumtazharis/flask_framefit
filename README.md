@@ -44,12 +44,13 @@ pip install -r requirements.txt
 ```
 
 ### 5️⃣ Konfigurasi Database
-Inisialisasi dan migrasi database menggunakan Flask-Migrate:
-```bash
-flask db init
-flask db migrate
-flask db upgrade
-```
+- Sesuaikan konfigurasi database anda pada file config.py, kemudian hapus folder migrations
+- Inisialisasi dan migrasi database menggunakan Flask-Migrate:
+  ```bash
+  flask db init
+  flask db migrate
+  flask db upgrade
+  ```
 (opsional): Jalankan file `upload_frames.py` untuk memasukkan data kacamata yang sudah ada kedalam database
 
 ### 6️⃣ Jalankan Server

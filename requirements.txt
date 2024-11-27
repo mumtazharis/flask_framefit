@@ -1,3 +1,5 @@
+# pip freeze > requirements.txt
+
 absl-py==2.1.0
 alembic==1.14.0
 asttokens==2.4.1
