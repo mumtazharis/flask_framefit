@@ -1,9 +1,10 @@
 # Backed Framefit
 
 Setelah melakukan clode, ketik tiap langkah ini pada terminal:
-1. virtualenv myenv
-2. myenv\Scripts\activate
-3. pip install -r requirements.txt
-4. flask db migrate
-5. flask db upgrade
-6. flask app.py
+1. pip install -r requirements.txt
+2. virtualenv myenv
+3. myenv\Scripts\activate 
+4. flask db init
+5. flask db migrate
+6. flask db upgrade
+7. flask app.py

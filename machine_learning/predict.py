@@ -7,15 +7,6 @@ model = joblib.load('machine_learning/best_svc_model.pkl')
 scaler = joblib.load('machine_learning/scaler.pkl')
 
 def predict(fitur):
-    """
-    Memprediksi label dan confidence dari fitur input.
-
-    Args:
-        fitur (array-like): Fitur yang akan diprediksi. Harus berupa array 1D (satu sampel).
-
-    Returns:
-        tuple: Label prediksi (string) dan confidence (float) untuk satu gambar.
-    """
     # Konversi fitur ke NumPy array
     fitur = np.array(fitur)
     if len(fitur.shape) == 1:

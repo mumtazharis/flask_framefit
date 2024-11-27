@@ -92,6 +92,7 @@ def landmarkFeature(landmarks):
     R9 = D4_length / D5_length
     R10 = D7_length / D6_length
 
+    #Sudut 1
     angle1 = hitungsudut((landmarks[8, 0], landmarks[8, 1]),(landmarks[71, 0], landmarks[71, 1]), (landmarks[10, 0], landmarks[10, 1]))
     #Sudut 2
     angle2 = hitungsudut((landmarks[8, 0], landmarks[8, 1]),(landmarks[71, 0], landmarks[71, 1]), (landmarks[12, 0], landmarks[12, 1]))
