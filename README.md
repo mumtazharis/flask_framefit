@@ -67,10 +67,14 @@ Beberapa file diperlukan untuk melakukan prediksi dengan machine learning atau d
 - **Dlib Shape Predictor**:  
   [Unduh Dlib Shape Predictor](https://github.com/codeniko/shape_predictor_81_face_landmarks/blob/master/shape_predictor_81_face_landmarks.dat)
 
-- **Model Deep Learning**:  
-  [Unduh Model Deep Learning](https://drive.google.com/file/d/1-0rcHnfchMJAY-uy67fQq_2u1x3nRVWO/view?usp=drive_link)
+- **Model HOG**:  
+  [Unduh Model HOG](https://drive.google.com/file/d/142083ggcibZtq1grebyWTMZGUJVFCOYB/view?usp=sharing)
 
-Setelah mengunduh kedua file di atas, letakkan file **Dlib Shape Predictor** ke dalam folder `machine_learning` dan file **Model Deep Learning** ke dalam folder `deep_learning`.
+- **Model Deep Learning**:  
+  [Unduh Model Deep Learning](https://drive.google.com/file/d/1-0rcHnfchMJAY-uy67fQq_2u1x3nRVWO/view?usp=sharing)
+
+
+Setelah mengunduh kedua file di atas, letakkan file **Dlib Shape Predictor** dan **Model HOG** ke dalam folder `machine_learning` dan file **Model Deep Learning** ke dalam folder `deep_learning`.
 
 ---
 
@@ -78,16 +82,17 @@ Setelah mengunduh kedua file di atas, letakkan file **Dlib Shape Predictor** ke 
 
 Anda dapat menyesuaikan jenis prediksi yang digunakan dengan mengubah file `api/api.py`:
 
-- Untuk **Machine Learning**:
+- **Machine Learning dengan Landmark**:
   ```python
   from api.predictpcvk import get_prediction
   ```
 
-- Untuk **Deep Learning**:
+- **Machine Learning dengan HOG**:
+  ```python
+  from api.predicthog import get_prediction
+  ```
+
+- **Deep Learning**:
   ```python
   from api.predict import get_prediction
   ```
-
----
-
-Dengan ini, Anda siap menjalankan backend FrameFit! Jika ada masalah atau pertanyaan, silakan buka *issues* di repository ini.

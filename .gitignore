@@ -5,3 +5,4 @@ machine_learning/shape_predictor_81_face_landmarks.dat
 Frame
 migrations
 env
+machine_learning/hog_model.pkl

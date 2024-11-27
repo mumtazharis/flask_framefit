@@ -2,10 +2,9 @@ from flask import jsonify, request
 from config import db
 import numpy as np
 import cv2
-from mtcnn import MTCNN
-from deep_learning.prediction import predict
-from deep_learning.preprocessing import preprocessing
-import matplotlib.pyplot as plt
+from machine_learning.preprocessing import preprocessing
+from machine_learning.feature_extraction_hog import feature_extraction
+from machine_learning.predict_hog import predict
 
 def get_prediction():
     # Memeriksa apakah ada file gambar yang diunggah
@@ -18,19 +17,18 @@ def get_prediction():
     # Mengonversi byte data menjadi gambar
     npimg = np.fromstring(in_memory_file, np.uint8)
     img = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
-   
-    
+
+
+
     preprocessed_img = preprocessing(img)
-
     if preprocessed_img is not None:
-        predicted_label, confidence = predict(preprocessed_img)
-
-    # Jika tidak ada wajah terdeteksi, return pesan error
+        fitur = feature_extraction(preprocessed_img)
+        label, confidence = predict(fitur)
     if preprocessed_img is None:
         return jsonify({'error': 'Wajah tidak terdeteksi'}), 400
 
 
     return jsonify({
-        'predicted_label': predicted_label,
-        'confidence': round(float(confidence), 2)  # Membulatkan confidence ke 2 desimal
+        'predicted_label': label,
+        'confidence':  confidence # Membulatkan confidence ke 2 desimal
     })

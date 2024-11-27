@@ -4,10 +4,12 @@ from api.user import register, login_user, send_otp
 from api.profile import get_profile
 from api.contact_us import contact_admin
 from api.kacamata import get_kacamata, add_kacamata, get_rekomendasi
-# from api.predict import get_prediction
-from api.predictpcvk import get_prediction
 from api.token import verify_token, refresh_token
 from api.profile import get_profile
+
+
+from api.predict import get_prediction
+
 # Membuat Blueprint
 api_blueprint = Blueprint('api', __name__)
 

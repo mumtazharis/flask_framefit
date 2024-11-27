@@ -1,5 +1,4 @@
 from tensorflow.keras.models import load_model
-from deep_learning.preprocessing import preprocessing
 import cv2
 import numpy as np
 
@@ -7,9 +6,8 @@ model = load_model('deep_learning/model_t1.keras')
 
 label_map = {0: 'Heart', 1: 'Oblong', 2: 'Oval', 3: 'Round', 4: 'Square'}
 
-def predict(gambar):
+def predict(preprocessed_img):
 
-    preprocessed_img = preprocessing(gambar)
     # Mendapatkan prediksi dan probabilitas
     predictions = model.predict(preprocessed_img)
     
