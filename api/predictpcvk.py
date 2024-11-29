@@ -23,8 +23,11 @@ def get_prediction():
     preprocessed_img = preprocessing(img)
     if preprocessed_img is not None:
         fitur = feature_extraction(preprocessed_img)
-        label, confidence = predict(fitur)
-    if preprocessed_img is None:
+        if fitur is not None:
+            label, confidence = predict(fitur)
+        else:
+            return jsonify({'error': 'Wajah tidak terdeteksi'}), 400
+    else:
         return jsonify({'error': 'Wajah tidak terdeteksi'}), 400
 
 

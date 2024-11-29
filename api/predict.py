@@ -26,7 +26,7 @@ def get_prediction():
         predicted_label, confidence = predict(preprocessed_img)
 
     # Jika tidak ada wajah terdeteksi, return pesan error
-    if preprocessed_img is None:
+    else:
         return jsonify({'error': 'Wajah tidak terdeteksi'}), 400
 
 

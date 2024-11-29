@@ -13,6 +13,7 @@ def detectLandmarks(image):
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor(predictor_path)
 
+    landmarks = None
     # Deteksi wajah pada gambar
     dets = detector(image, 1)
     for d in dets:
@@ -25,7 +26,7 @@ def detectLandmarks(image):
             x = shape.parts()[num].x
             y = shape.parts()[num].y
             # Gambar titik
-            cv2.circle(image, (x, y), 3, (0, 255, 0), -1)
+            cv2.circle(image, (x, y), 2, (0, 0, 255), -1)
             # Tampilkan angka di atas titik
             cv2.putText(image, str(num), (x, y-5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1, cv2.LINE_AA)
 
@@ -79,7 +80,7 @@ def lineLandmarks(image, landmarks):
             image,
             (landmarks[atas_kiri_points[i], 0], landmarks[atas_kiri_points[i], 1]),
             (landmarks[atas_kiri_points[i + 1], 0], landmarks[atas_kiri_points[i + 1], 1]),
-            (0, 0, 255),  # Warna merah
+            (0, 255, 0),  # Warna merah
             1
         )
 
@@ -90,7 +91,7 @@ def lineLandmarks(image, landmarks):
             image,
             (landmarks[atas_kanan_points[i], 0], landmarks[atas_kanan_points[i], 1]),
             (landmarks[atas_kanan_points[i + 1], 0], landmarks[atas_kanan_points[i + 1], 1]),
-            (0, 0, 255),  # Warna merah
+            (0, 255, 0),  # Warna merah
             1
         )
 
@@ -213,15 +214,18 @@ def landmarkFeature(landmarks):
 
 def feature_extraction(image):
     landmark = detectLandmarks(image)
-    line_landmarks = lineLandmarks(image.copy(), landmark)
-    landmark_features = landmarkFeature(landmark)
+    if landmark is not None:
+        line_landmarks = lineLandmarks(image.copy(), landmark)
+        landmark_features = landmarkFeature(landmark)
 
-    # Tampilkan gambar dengan OpenCV
-    cv2.imshow('Landmarks',line_landmarks)
-    cv2.waitKey(0)  # Tunggu hingga tombol ditekan
-    cv2.destroyAllWindows()  # Tutup jendela
+        # Tampilkan gambar dengan OpenCV
+        cv2.imshow('Landmarks',line_landmarks)
+        cv2.waitKey(0)  # Tunggu hingga tombol ditekan
+        cv2.destroyAllWindows()  # Tutup jendela
 
-    for i, feature in enumerate(landmark_features, 1):
-        print(f"Feature {i}: {feature:.2f}")
+        for i, feature in enumerate(landmark_features, 1):
+            print(f"Feature {i}: {feature:.2f}")
 
-    return landmark_features
+        return landmark_features
+    else:
+        return None
