@@ -5,7 +5,7 @@ from api.profile import get_profile
 from api.contact_us import contact_admin
 from api.kacamata import get_kacamata, add_kacamata, get_rekomendasi
 from api.token import verify_token, refresh_token
-from api.profile import get_profile
+from api.profile import get_profile, edit_profile
 
 
 from api.predict import get_prediction
@@ -20,6 +20,7 @@ api_blueprint.route('/users/register', methods=['POST'])(register)
 api_blueprint.route('/users/sendotp', methods=['POST'])(send_otp)                          
 api_blueprint.route('/users/login', methods=['POST'])(login_user)               
 api_blueprint.route('/profile', methods=['GET'])(jwt_required()(get_profile))              
+api_blueprint.route('/profile/edit', methods=['POST'])(jwt_required()(edit_profile))              
 api_blueprint.route('/contact', methods=['POST'])(contact_admin)                   
 api_blueprint.route('/kacamata', methods=['GET'])(jwt_required()(get_kacamata))    
 api_blueprint.route('/kacamata', methods=['POST'])(jwt_required()(add_kacamata))   
