@@ -57,23 +57,34 @@ def get_rekomendasi():
     return jsonify(result)
 
 def get_kacamata():
-    base_path = os.path.join(os.getcwd(), "static", "Frame")
-    photos = []
+    try:
+        # Ambil parameter gender dari request
+        gender_filter = request.args.get('gender', '')
 
-    for gender in ["male", "female"]:
-        gender_path = os.path.join(base_path, gender)
-        if os.path.exists(gender_path):
-            for category in os.listdir(gender_path):
-                category_path = os.path.join(gender_path, category)
-                if os.path.isdir(category_path):
-                    for filename in os.listdir(category_path):
-                        if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
-                            photo_url = f"{request.host_url}static/Frame/{gender}/{category}/{filename}"
-                            photos.append({
-                                "gender": gender,
-                                "category": category,
-                                "filename": filename,
-                                "url": photo_url
-                            })
+        # Jika gender_filter ada, lakukan filter berdasarkan gender
+        if gender_filter:
+            kacamata = Kacamata.query.filter(Kacamata.gender == gender_filter).all()
+        else:
+            # Jika tidak ada filter gender, ambil semua kacamata
+            kacamata = Kacamata.query.all()
 
-    return jsonify(photos)
+        # Bangun respons JSON dengan memastikan path foto valid
+        result = [
+            {
+                "kacamata_id": k.kacamata_id,
+                "model": k.model,
+                "jenis": k.jenis,
+                "gender": k.gender,
+                "bentuk": k.bentuk,
+                "deskripsi": k.deskripsi,
+                # Pastikan path foto dilengkapi URL server
+                "foto": f"{request.host_url.rstrip('/')}/{k.foto}" 
+            }
+            for k in kacamata
+        ]
+
+        return jsonify(result), 200
+
+    except Exception as e:
+        return jsonify({"error": f"Gagal memuat data kacamata: {str(e)}"}), 500
+

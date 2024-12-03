@@ -83,8 +83,8 @@ def send_email(to_email, otp):
     try:
         smtp_server = "smtp.gmail.com"
         smtp_port = 587
-        sender_email = "ahmadmumtazhrs@gmail.com"
-        sender_password = "vrjq jinv jeba esjz"
+        sender_email = "jti.framefit@gmail.com"
+        sender_password = "kxoj ydqs prhi pizf"
 
         msg = MIMEText(f"Kode OTP Anda adalah: {otp}")
         msg['Subject'] = "Kode OTP Registrasi"
