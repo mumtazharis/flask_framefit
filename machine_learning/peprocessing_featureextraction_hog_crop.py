@@ -42,7 +42,7 @@ def cropFace(image, face, target_size=(224, 224)):
         canvas[y_offset:y_offset + new_h, x_offset:x_offset + new_w] = resized_face
         if canvas is not None:
             # Tampilkan gambar dengan OpenCV
-            cv2.imshow('HOG features',canvas)
+            cv2.imshow('Cropped Image',canvas)
             cv2.waitKey(0)  # Tunggu hingga tombol ditekan
             cv2.destroyAllWindows()  # Tutup jendela
         # Deteksi landmark menggunakan MediaPipe

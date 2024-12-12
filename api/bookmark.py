@@ -42,10 +42,10 @@ def add_bookmark():
     db.session.commit()
     return jsonify({'message': 'Bookmark added successfully.'}), 201
 
-def delete_bookmark(bookmark_id):
-    """Menghapus bookmark berdasarkan ID jika milik pengguna yang sedang login."""
+def delete_bookmark(kacamata_id):
+    """Menghapus bookmark berdasarkan kacamata_id jika milik pengguna yang sedang login."""
     user_id = get_jwt_identity()  # Mendapatkan user_id dari JWT
-    bookmark = Bookmark.query.filter_by(bookmark_id=bookmark_id, user_id=user_id).first()
+    bookmark = Bookmark.query.filter_by(kacamata_id=kacamata_id, user_id=user_id).first()
 
     if not bookmark:
         return jsonify({'error': 'Bookmark not found or not authorized to delete.'}), 404
