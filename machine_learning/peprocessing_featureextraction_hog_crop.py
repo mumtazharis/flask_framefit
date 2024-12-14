@@ -21,8 +21,8 @@ def cropFace(image, face, target_size=(224, 224)):
     """Mencrop wajah dan mendeteksi landmark dengan pengurangan background."""
     if face is not None:
         x, y, w, h = face
-        buffer_top = int(h * 0.1)
-        buffer_bottom = int(h * 0.1)
+        buffer_top = int(h * 0.2)
+        buffer_bottom = int(h * 0.2)
         buffer_left = int(w * 0.1)
         buffer_right = int(w * 0.1)
         y_top = max(0, y - buffer_top)
@@ -40,11 +40,11 @@ def cropFace(image, face, target_size=(224, 224)):
         x_offset = (target_w - new_w) // 2
         y_offset = (target_h - new_h) // 2
         canvas[y_offset:y_offset + new_h, x_offset:x_offset + new_w] = resized_face
-        if canvas is not None:
-            # Tampilkan gambar dengan OpenCV
-            cv2.imshow('Cropped Image',canvas)
-            cv2.waitKey(0)  # Tunggu hingga tombol ditekan
-            cv2.destroyAllWindows()  # Tutup jendela
+        # if canvas is not None:
+        #     # Tampilkan gambar dengan OpenCV
+        #     cv2.imshow('Cropped Image',canvas)
+        #     cv2.waitKey(0)  # Tunggu hingga tombol ditekan
+        #     cv2.destroyAllWindows()  # Tutup jendela
         # Deteksi landmark menggunakan MediaPipe
         image_rgb = cv2.cvtColor(canvas, cv2.COLOR_BGR2RGB)
         results = face_mesh.process(image_rgb)
@@ -105,10 +105,10 @@ def feature_extraction(image):
     if std_img is not None:
         features, hog_image = extract_hog_features(std_img)
 
-        # Tampilkan gambar dengan OpenCV
-        cv2.imshow('HOG features',hog_image)
-        cv2.waitKey(0)  # Tunggu hingga tombol ditekan
-        cv2.destroyAllWindows()  # Tutup jendela
+        # # Tampilkan gambar dengan OpenCV
+        # cv2.imshow('HOG features',hog_image)
+        # cv2.waitKey(0)  # Tunggu hingga tombol ditekan
+        # cv2.destroyAllWindows()  # Tutup jendela
 
         return features
 

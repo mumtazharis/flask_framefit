@@ -23,8 +23,10 @@ def get_rekomendasi():
     if request.is_json:
         data = request.get_json()
         bentuk_wajah = data.get('bentuk_wajah')
+        gender = data.get('gender')
     else:
         bentuk_wajah = request.args.get('bentuk_wajah') or request.form.get('bentuk_wajah')
+        gender = request.args.get('gender') or request.form.get('gender')
 
     rekomendasi_map = {
         'Heart': ['Aviator', 'Butterfly', 'CatEye', 'Oval', 'Round', 'Wayfarer'],
@@ -34,12 +36,22 @@ def get_rekomendasi():
         'Square': ['Browline', 'Butterfly', 'Oval', 'Round']
     }
 
+  
     if bentuk_wajah not in rekomendasi_map:
         return jsonify({"error": "Invalid face shape"}), 400
 
     jenis_kacamata = rekomendasi_map[bentuk_wajah]
 
-    kacamata = Kacamata.query.filter(Kacamata.bentuk.in_(jenis_kacamata)).all()
+    if gender:
+        # Tambahkan filter untuk gender dan Unisex
+        kacamata = Kacamata.query.filter(
+            Kacamata.bentuk.in_(jenis_kacamata),
+            Kacamata.gender.in_([gender, 'unisex'])
+        ).all()
+    else:
+        kacamata = Kacamata.query.filter(
+            Kacamata.bentuk.in_(jenis_kacamata)
+        ).all()
 
     result = [
         {

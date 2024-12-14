@@ -19,7 +19,7 @@ def predict(fitur):
     confidence = model.predict_proba(reduced_features)[0]  # Ambil elemen pertama untuk probabilitas
 
     # Ambil confidence untuk label prediksi
-    confidence_for_label = confidence[np.argmax(confidence)]  # Confidence tertinggi
+    confidence_for_label = confidence[np.argmax(confidence)] * 100  # Confidence tertinggi
 
     print("Predicted Label:", label)
     print("Confidence for Label:", confidence_for_label)
