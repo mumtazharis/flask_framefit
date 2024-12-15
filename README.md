@@ -75,7 +75,7 @@ Beberapa file diperlukan untuk melakukan prediksi dengan machine learning atau d
   [Unduh Model Deep Learning](https://drive.google.com/file/d/1-0rcHnfchMJAY-uy67fQq_2u1x3nRVWO/view?usp=sharing)
 
 - **Model HOG Baru**:\
-  [Unduh Model HOG Baru](https://drive.google.com/file/d/1pQ_X7eBzuvtVrqgXOf71Fi83NGH3BZA1/view?usp=sharing)
+  [Unduh Model HOG Baru](https://drive.google.com/file/d/1B2VZYm3tuf2KkmhIZvyTjLhtmBFYZmFN/view?usp=sharing)
 
 Setelah mengunduh file di atas, letakkan file **Dlib Shape Predictor** dan **Model HOG** ke dalam folder `machine_learning` dan file **Model Deep Learning** ke dalam folder `deep_learning`. Untuk Model HOG Baru, ekstrak terlebih dahulu kemudian pindahkan isi file ke dalam foler `machine-learning`
 

@@ -2,9 +2,6 @@ import cv2
 import numpy as np
 import mediapipe as mp
 from skimage.feature import hog
-# Inisialisasi MediaPipe Face Mesh
-mp_face_mesh = mp.solutions.face_mesh
-face_mesh = mp_face_mesh.FaceMesh(max_num_faces=1)
 
 def detectFace(image):
     """Mendeteksi wajah menggunakan Haar Cascade."""
@@ -47,6 +44,11 @@ def cropFace(image, face, target_size=(224, 224)):
         #     cv2.destroyAllWindows()  # Tutup jendela
         # Deteksi landmark menggunakan MediaPipe
         image_rgb = cv2.cvtColor(canvas, cv2.COLOR_BGR2RGB)
+
+        # Inisialisasi MediaPipe Face Mesh
+        mp_face_mesh = mp.solutions.face_mesh
+        face_mesh = mp_face_mesh.FaceMesh(max_num_faces=1)
+
         results = face_mesh.process(image_rgb)
 
         if results.multi_face_landmarks:
@@ -86,7 +88,7 @@ def standarized_input(image):
 
 
 
-def extract_hog_features(image, pixels_per_cell=(4, 4), cells_per_block=(2, 2), orientations=9):
+def extract_hog_features(image, pixels_per_cell=(8, 8), cells_per_block=(2, 2), orientations=9):
     """Ekstraksi fitur HOG dari gambar."""
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # Konversi ke grayscale
     features, hog_image = hog(

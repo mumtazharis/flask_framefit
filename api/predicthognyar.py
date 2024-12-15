@@ -1,9 +1,5 @@
 from flask import jsonify, request
-from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import PCA
-import joblib  # Untuk memuat model yang disimpan
 import cv2
-from skimage.feature import hog
 from machine_learning.peprocessing_featureextraction_hog_crop import feature_extraction
 from machine_learning.predict_hog_nyar import predict
 import numpy as np

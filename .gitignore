@@ -8,5 +8,8 @@ env
 machine_learning/hog_model.pkl
 machine_learning/hog_model3.pkl
 machine_learning/scaler_hog3.pkl
+machine_learning/hog_model4.pkl
+machine_learning/scaler_hog4.pkl
 machine_learning/pca_model_hog3.pkl
 machine_learning/hog_nyar.rar
+machine_learning/hog4.rar
