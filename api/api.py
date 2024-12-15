@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask_jwt_extended import jwt_required
-from api.user import register, login_user, send_otp
+from api.user import register, login_user, send_otp, ubah_password
 from api.profile import get_profile, edit_profile
 from api.contact_us import contact_admin
 from api.kacamata import get_kacamata, add_kacamata, get_rekomendasi
@@ -27,3 +27,4 @@ api_blueprint.route('/predict', methods=['POST'])(get_prediction)
 api_blueprint.route('/bookmark', methods=['POST'])(jwt_required()(add_bookmark))  
 api_blueprint.route('/bookmark', methods=['GET'])(jwt_required()(get_user_bookmarks)) 
 api_blueprint.route('/bookmark/<int:kacamata_id>', methods=['DELETE'])(jwt_required()(delete_bookmark)) 
+api_blueprint.route('/users/ubah_password', methods=['POST'])(jwt_required()(ubah_password))

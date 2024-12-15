@@ -134,3 +134,36 @@ def send_otp():
     send_email(username, otp)
 
     return jsonify({"message": "OTP telah dikirim ke email"}), 200
+
+def ubah_password():
+    data = request.get_json()
+    user_id = get_jwt_identity()  # Ambil user_id dari token JWT
+
+    # Validasi input
+    password_lama = data.get('password_lama')
+    password_baru = data.get('password_baru')
+    konfirmasi_password = data.get('konfirmasi_password')
+
+    if not password_lama or not password_baru or not konfirmasi_password:
+        return jsonify({"message": "Semua data diperlukan"}), 400
+
+    if password_baru != konfirmasi_password:
+        return jsonify({"message": "Password baru dan konfirmasi tidak cocok"}), 400
+
+    # Cari pengguna berdasarkan user_id
+    user = User.query.filter_by(user_id=user_id).first()
+    if not user:
+        return jsonify({"message": "Pengguna tidak ditemukan"}), 404
+
+    # Verifikasi password lama
+    if not check_password_hash(user.password, password_lama):
+        return jsonify({"message": "Password lama salah"}), 401
+
+    # Update password
+    try:
+        user.password = generate_password_hash(password_baru)
+        db.session.commit()
+        return jsonify({"message": "Password berhasil diubah"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": f"Terjadi kesalahan: {str(e)}"}), 500
