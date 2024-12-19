@@ -61,10 +61,10 @@ def cropFace(image, face, target_size=(224, 224)):
                        234, 34, 162, 21, 54, 103, 67, 109]
             selected_landmarks = np.array([[landmarks[i].x, landmarks[i].y] for i in indices]) * [canvas.shape[1], canvas.shape[0]]
             
-            mask = np.zeros(canvas.shape[:2], dtype=np.uint8)
+            mask = np.zeros(canvas.shape, dtype=np.uint8)
             all_points = selected_landmarks.astype(np.int32)
             cv2.fillPoly(mask, [all_points], 255)
-            face_only = cv2.bitwise_and(canvas, canvas, mask=mask)
+            face_only = np.bitwise_and(canvas, mask)
             
             return face_only
     return None
@@ -107,10 +107,10 @@ def feature_extraction(image):
     if std_img is not None:
         features, hog_image = extract_hog_features(std_img)
 
-        # # Tampilkan gambar dengan OpenCV
-        # cv2.imshow('HOG features',hog_image)
-        # cv2.waitKey(0)  # Tunggu hingga tombol ditekan
-        # cv2.destroyAllWindows()  # Tutup jendela
+        # Tampilkan gambar dengan OpenCV
+        cv2.imshow('HOG features',hog_image)
+        cv2.waitKey(0)  # Tunggu hingga tombol ditekan
+        cv2.destroyAllWindows()  # Tutup jendela
 
         return features
 

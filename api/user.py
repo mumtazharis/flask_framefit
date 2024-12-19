@@ -167,3 +167,74 @@ def ubah_password():
     except Exception as e:
         db.session.rollback()
         return jsonify({"message": f"Terjadi kesalahan: {str(e)}"}), 500
+    
+def send_otp_sandi():
+    data = request.get_json()
+    username = data.get('email')
+
+    # Validasi email
+    if not username:
+        return jsonify({"message": "Email diperlukan"}), 400
+
+    # Periksa apakah email sudah terdaftar di tabel User (pengguna permanen)
+    existing_user = User.query.filter_by(username=username).first()
+    if not existing_user:
+        return jsonify({"message": "Email tidak terdaftar"}), 404
+
+    # Generate OTP
+    otp = pyotp.random_base32()[:6]  # 6 digit OTP
+    otp_expiration = datetime.now() + timedelta(minutes=5)  # OTP berlaku 5 menit
+
+    # Periksa apakah username sudah ada di tabel TemporaryUser
+    temp_user = TemporaryUser.query.filter_by(username=username).first()
+    if temp_user:
+        # Jika sudah ada, perbarui OTP dan tanggal kedaluwarsa
+        temp_user.otp = otp
+        temp_user.otp_expiration = otp_expiration
+    else:
+        # Jika belum ada, tambahkan pengguna sementara baru
+        temp_user = TemporaryUser(username=username, otp=otp, otp_expiration=otp_expiration)
+        db.session.add(temp_user)
+
+    # Simpan perubahan ke database
+    db.session.commit()
+
+    # Kirim OTP melalui email
+    send_email(username, otp)
+
+    return jsonify({"message": "OTP telah dikirim ke email"}), 200
+
+def lupa_password():
+    data = request.get_json()
+    email = data.get('email')
+    otp = data.get('otp')
+    new_password = data.get('new_password')
+
+    # Validasi input
+    if not email or not otp or not new_password:
+        return jsonify({"message": "Email, OTP, dan kata sandi baru diperlukan"}), 400
+
+    # Cari pengguna sementara berdasarkan email
+    temp_user = TemporaryUser.query.filter_by(username=email).first()
+    if not temp_user:
+        return jsonify({"message": "Email tidak ditemukan"}), 404
+
+    # Cari pengguna permanen berdasarkan email
+    user = User.query.filter_by(username=email).first()
+    if not user:
+        return jsonify({"message": "Pengguna tidak ditemukan"}), 404
+
+    try:
+        # Ubah password pengguna permanen
+        user.password = generate_password_hash(new_password)
+        
+        # Hapus data pengguna sementara setelah berhasil
+        db.session.delete(temp_user)
+
+        # Commit perubahan ke database
+        db.session.commit()
+
+        return jsonify({"message": "Kata sandi berhasil diubah"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": f"Terjadi kesalahan: {str(e)}"}), 500
