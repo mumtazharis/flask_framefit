@@ -69,13 +69,13 @@ Beberapa file diperlukan untuk melakukan prediksi dengan machine learning atau d
   [Unduh Dlib Shape Predictor](https://github.com/codeniko/shape_predictor_81_face_landmarks/blob/master/shape_predictor_81_face_landmarks.dat)
 
 - **Model HOG**:  
-  [Unduh Model HOG](https://drive.google.com/file/d/142083ggcibZtq1grebyWTMZGUJVFCOYB/view?usp=sharing)
+  [Unduh Model HOG](https://drive.google.com/file/d/1OYDqyBXQxPN-0lem71x4B3mM02WbKadT/view?usp=sharing)
 
 - **Model Deep Learning**:  
-  [Unduh Model Deep Learning](https://drive.google.com/file/d/1-0rcHnfchMJAY-uy67fQq_2u1x3nRVWO/view?usp=sharing)
+  [Unduh Model Deep Learning](https://drive.google.com/file/d/17HwelfTi2Qy6On6I_fwIUXOOcJxOiLif/view?usp=sharing)
 
 - **Model HOG Baru**:\
-  [Unduh Model HOG Baru](https://drive.google.com/file/d/1B2VZYm3tuf2KkmhIZvyTjLhtmBFYZmFN/view?usp=sharing)
+  [Unduh Model HOG Baru](https://drive.google.com/file/d/1RwzhQ2vUsiA_pVDYJRgs4zM1cpLU5tzw/view?usp=sharing)
 
 Setelah mengunduh file di atas, letakkan file **Dlib Shape Predictor** dan **Model HOG** ke dalam folder `machine_learning` dan file **Model Deep Learning** ke dalam folder `deep_learning`. Untuk Model HOG Baru, ekstrak terlebih dahulu kemudian pindahkan isi file ke dalam foler `machine-learning`
 
@@ -90,7 +90,7 @@ Anda dapat menyesuaikan jenis prediksi yang digunakan dengan mengubah file `api/
   from api.predictpcvk import get_prediction
   ```
 
-- **Machine Learning dengan HOG**:
+- **Machine Learning dengan HOG lama**:
   ```python
   from api.predicthog import get_prediction
   ```

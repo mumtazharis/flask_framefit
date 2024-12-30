@@ -87,7 +87,7 @@ def send_email(to_email, otp):
         sender_password = "kxoj ydqs prhi pizf"
 
         msg = MIMEText(f"Kode OTP Anda adalah: {otp}")
-        msg['Subject'] = "Kode OTP Registrasi"
+        msg['Subject'] = "Kode OTP"
         msg['From'] = sender_email
         msg['To'] = to_email
 
